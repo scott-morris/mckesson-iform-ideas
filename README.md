@@ -22,17 +22,20 @@ Make sure your installation instructions work by testing them!
 
 Now let's describe how you can use this project!
 
-For the sake of the example, I will include an unnecessarily explicit code block
-because the "Usage" section should contain examples.
-
-So here is how you can use this project as a basis for your own future repository:
+If you're planning on cloning the repo to your machine:
 
 ```bash
-git clone https://github.com/mnapoli/project-template.git my-project
-cd my-project
-# Remove the git repository metadata
-rm -rf .git/
-# Start a brand new repository
-git init
-git add .
+git clone https://github.com/scott-morris/mckesson-iform-ideas.git
+cd mckesson-iform-ideas
+```
+
+After you have the repo on your machine, run
+```bash
+npm install
+```
+
+to initialize the project.  Then, to build, simply run
+
+```bash
+gulp
 ```
