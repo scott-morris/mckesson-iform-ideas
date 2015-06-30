@@ -1,0 +1,96 @@
+####################################################
+#Duplicate pain scale meds
+####################################################
+
+
+INIT,SET,LOCAL,orderstring,TO
+
+#
+# Initialize locals and orderable checkboxes
+#
+INIT,SET,CHECKBOX,dc1,TO,"false"
+INIT,SET,CHECKBOX,dc2,TO,"false"
+INIT,SET,CHECKBOX,dc3,TO,"false"
+INIT,SET,CHECKBOX,dc4,TO,"false"
+INIT,SET,CHECKBOX,dc5,TO,"false"
+INIT,SET,CHECKBOX,dc6,TO,"false"
+INIT,SET,CHECKBOX,dc7,TO,"false"
+INIT,SET,CHECKBOX,dc8,TO,"false"
+INIT,SET,CHECKBOX,dc9,TO,"false"
+#
+##GET status of all possible pain meds, only run if status of 1
+#
+INIT,MAP,LOCAL,painstatus_1,TO,get_order.status.14000240.1
+INIT,MAP,LOCAL,painstatus_2,TO,get_order.status.14000240.2
+INIT,MAP,LOCAL,painstatus_3,TO,get_order.status.14000240.3
+#
+##EXIT if all of the statuses are old
+#
+INIT,IF,ALL,painstatus,EQ,0,THEN,
+INIT,EXIT,ALL
+#
+##GET UI of 3 instances of each med
+#
+INIT,MAP,LOCAL,pain1aui,TO,get_order.ui.14000240.1
+INIT,MAP,LOCAL,pain1bui,TO,get_order.ui.14000240.2
+INIT,MAP,LOCAL,pain1cui,TO,get_order.ui.14000240.3
+
+#
+#GEt the string of all orders
+#
+INIT,MAP,LOCAL,pain1astring,TO,get_order.display_string.14000240.1
+INIT,MAP,LOCAL,pain1bstring,TO,get_order.display_string.14000240.2
+INIT,MAP,LOCAL,pain1cstring,TO,get_order.display_string.14000240.3
+#
+##GET indication prompt for 3 instances of each med
+#
+INIT,MAP,LOCAL,ind1a,TO,get_order.1000508.14000240.1
+INIT,MAP,LOCAL,ind1b,TO,get_order.1000508.14000240.2
+INIT,MAP,LOCAL,ind1c,TO,get_order.1000508.14000240.3
+#
+INIT,SET,LOCAL,mildcount,TO,0
+INIT,SET,LOCAL,modcount,TO,0
+INIT,SET,LOCAL,sevcount,TO,0
+#
+##Increment a counter for each instance of a mild, mod, or sev 
+#
+INIT,IF,,ind1a,CONTAINS,MILD,THEN,
+INIT,SET,,mildcount,ADD,1,AND,
+INIT,SET,,painmild1,TO,pain1astring
+INIT,IF,,ind1b,CONTAINS,MILD,THEN,
+INIT,SET,,mildcount,ADD,1
+INIT,IF,,ind1c,CONTAINS,MILD,THEN,
+INIT,SET,,mildcount,ADD,1
+INIT,IF,,ind1a,CONTAINS,MOD,THEN,
+INIT,SET,,modcount,ADD,1
+INIT,IF,,ind1b,CONTAINS,MOD,THEN,
+INIT,SET,,modcount,ADD,1
+INIT,IF,,ind1c,CONTAINS,MOD,THEN,
+INIT,SET,,modcount,ADD,1
+INIT,IF,,ind1a,CONTAINS,SEV,THEN,
+INIT,SET,,sevcount,ADD,1
+INIT,IF,,ind1b,CONTAINS,SEV,THEN,
+INIT,SET,,sevcount,ADD,1
+INIT,IF,,ind1c,CONTAINS,SEV,THEN,
+INIT,SET,,sevcount,ADD,1
+
+
+
+
+
+
+
+# Load the form
+#
+INIT,LOAD,FORM,,,duplicate
+
+EDIT,IF,,_action,EQ,"Exit without changes",THEN
+EDIT,EXIT,ALL
+#
+# process orders
+#
+
+
+EDIT,LOAD_ORDER,,,,orderstring
+
+EDIT,EXIT,ALL

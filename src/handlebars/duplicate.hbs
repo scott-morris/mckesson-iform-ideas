@@ -1,0 +1,148 @@
+####################################################
+# Duplicate pain scale meds
+####################################################
+
+INIT,SET,LOCAL,orderstring,TO
+
+#
+# Initialize locals and orderable checkboxes
+#
+{{#repeat count=num_dc start=1}}
+INIT,SET,CHECKBOX,dc{{@index}},TO,"false"
+{{/repeat}}
+#
+##GET status of all possible pain meds, only run if status of 1
+#
+{{#med_ois}}
+INIT,MAP,LOCAL,painstatus_{{math (math @index "*" 3) "+" 1}},TO,get_order.status.{{this}}.1
+INIT,MAP,LOCAL,painstatus_{{math (math @index "*" 3) "+" 2}},TO,get_order.status.{{this}}.2
+INIT,MAP,LOCAL,painstatus_{{math (math @index "*" 3) "+" 3}},TO,get_order.status.{{this}}.3
+{{/med_ois}}
+#
+##EXIT if all of the statuses are old
+#
+INIT,IF,ALL,painstatus,EQ,0,THEN,
+INIT,EXIT,ALL
+#
+##GET UI of 3 instances of each med
+#
+{{#med_ois}}
+INIT,MAP,LOCAL,pain{{@index}}aui,TO,get_order.ui.{{this}}.1
+INIT,MAP,LOCAL,pain{{@index}}bui,TO,get_order.ui.{{this}}.2
+INIT,MAP,LOCAL,pain{{@index}}cui,TO,get_order.ui.{{this}}.3
+{{/med_ois}}
+
+
+#
+##GET the string of all orders
+#
+{{#med_ois}}
+INIT,MAP,LOCAL,pain{{@index}}astring,TO,get_order.display_string.{{this}}.1
+INIT,MAP,LOCAL,pain{{@index}}bstring,TO,get_order.display_string.{{this}}.2
+INIT,MAP,LOCAL,pain{{@index}}cstring,TO,get_order.display_string.{{this}}.3
+{{/med_ois}}
+#
+##GET indication prompt for 3 instances of each med
+#
+{{#med_ois}}
+INIT,MAP,LOCAL,ind{{@index}}a,TO,get_order.1000508.{{this}}.1
+INIT,MAP,LOCAL,ind{{@index}}b,TO,get_order.1000508.{{this}}.2
+INIT,MAP,LOCAL,ind{{@index}}c,TO,get_order.1000508.{{this}}.3
+{{/med_ois}}
+#
+INIT,SET,LOCAL,mildcount,TO,0
+INIT,SET,LOCAL,modcount,TO,0
+INIT,SET,LOCAL,sevcount,TO,0
+#
+INIT,SET,LOCAL,mildtest,TO,
+INIT,SET,LOCAL,modtext,TO,
+INIT,SET,LOCAL,sevtest,TO,
+#
+INIT,SET,LOCAL,mildUI,TO,
+INIT,SET,LOCAL,modUI,TO,
+INIT,SET,LOCAL,sevUI,TO,
+#
+##Increment a counter for each instance of a mild, mod, or sev 
+#
+{{#med_ois}}
+#### {{this}} MILD ####
+INIT,IF,,ind{{@index}}a,CONTAINS,MILD,THEN,
+INIT,SET,,mildcount,ADD,1,AND,
+INIT,SET,,mildtext,CAT,pain{{@index}}astring,AND,
+INIT,SET,,mildtext,CAT,",",AND,
+INIT,SET,,mildUI,CAT,pain{{@index}}aui,AND,
+INIT,SET,,mildUI,CAT,",",AND,
+
+INIT,IF,,ind{{@index}}b,CONTAINS,MILD,THEN,
+INIT,SET,,mildcount,ADD,1,AND,
+INIT,SET,,mildtext,CAT,pain{{@index}}bstring,AND,
+INIT,SET,,mildtext,CAT,",",AND,
+INIT,SET,,mildUI,CAT,pain{{@index}}bui,AND,
+INIT,SET,,mildUI,CAT,",",AND,
+
+INIT,IF,,ind{{@index}}c,CONTAINS,MILD,THEN,
+INIT,SET,,mildcount,ADD,1,AND,
+INIT,SET,,mildtext,CAT,pain{{@index}}cstring,AND,
+INIT,SET,,mildtext,CAT,",",AND,
+INIT,SET,,mildUI,CAT,pain{{@index}}cui,AND,
+INIT,SET,,mildUI,CAT,",",AND,
+
+#### {{this}} MODERATE ####
+INIT,IF,,ind{{@index}}a,CONTAINS,MOD,THEN,
+INIT,SET,,modcount,ADD,1,AND,
+INIT,SET,,modtext,CAT,pain{{@index}}astring,AND,
+INIT,SET,,modtext,CAT,",",AND,
+INIT,SET,,modUI,CAT,pain{{@index}}aui,AND,
+INIT,SET,,modUI,CAT,",",AND,
+
+INIT,IF,,ind{{@index}}b,CONTAINS,MOD,THEN,
+INIT,SET,,modcount,ADD,1,AND,
+INIT,SET,,modtext,CAT,pain{{@index}}bstring,AND,
+INIT,SET,,modtext,CAT,",",AND,
+INIT,SET,,modUI,CAT,pain{{@index}}bui,AND,
+INIT,SET,,modUI,CAT,",",AND,
+
+INIT,IF,,ind{{@index}}c,CONTAINS,MOD,THEN,
+INIT,SET,,modcount,ADD,1,AND,
+INIT,SET,,modtext,CAT,pain{{@index}}cstring,AND,
+INIT,SET,,modtext,CAT,",",AND,
+INIT,SET,,modUI,CAT,pain{{@index}}cui,AND,
+INIT,SET,,modUI,CAT,",",AND,
+
+#### {{this}} SEVERE ####
+INIT,IF,,ind{{@index}}a,CONTAINS,SEV,THEN,
+INIT,SET,,sevcount,ADD,1,AND,
+INIT,SET,,sevtext,CAT,pain{{@index}}astring,AND,
+INIT,SET,,sevtext,CAT,",",AND,
+INIT,SET,,sevUI,CAT,pain{{@index}}aui,AND,
+INIT,SET,,sevUI,CAT,",",AND,
+
+INIT,IF,,ind{{@index}}b,CONTAINS,SEV,THEN,
+INIT,SET,,sevcount,ADD,1,AND,
+INIT,SET,,sevtext,CAT,pain{{@index}}bstring,AND,
+INIT,SET,,sevtext,CAT,",",AND,
+INIT,SET,,sevUI,CAT,pain{{@index}}bui,AND,
+INIT,SET,,sevUI,CAT,",",AND,
+
+INIT,IF,,ind{{@index}}c,CONTAINS,SEV,THEN,
+INIT,SET,,sevcount,ADD,1,AND,
+INIT,SET,,sevtext,CAT,pain{{@index}}cstring,AND,
+INIT,SET,,sevtext,CAT,",",AND,
+INIT,SET,,sevUI,CAT,pain{{@index}}cui,AND,
+INIT,SET,,sevUI,CAT,",",AND,
+
+{{/med_ois}}
+# Load the form
+#
+INIT,LOAD,FORM,,,duplicate
+
+EDIT,IF,,_action,EQ,"Exit without changes",THEN
+EDIT,EXIT,ALL
+#
+# process orders
+#
+
+
+EDIT,LOAD_ORDER,,,,orderstring
+
+EDIT,EXIT,ALL

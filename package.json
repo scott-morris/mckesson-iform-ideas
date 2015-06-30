@@ -23,6 +23,8 @@
     "gulp-ext-replace": "^0.2.0",
     "gulp-handlebars": "^4.0.0",
     "gulp-hb": "^2.6.0",
+    "gulp-static-handlebars": "^1.1.0",
+    "handlebars-helper-repeat": "^0.3.1",
     "js-yaml": "^3.3.1",
     "load-grunt-tasks": "^3.1.0",
     "yargs": "^3.10.0"
