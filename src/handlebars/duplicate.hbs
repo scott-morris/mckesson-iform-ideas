@@ -26,44 +26,43 @@ INIT,EXIT,ALL
 #
 ##GET UI of 3 instances of each med
 #
-{{#med_ois}}
-INIT,MAP,LOCAL,pain{{@index}}aui,TO,get_order.ui.{{this}}.1
-INIT,MAP,LOCAL,pain{{@index}}bui,TO,get_order.ui.{{this}}.2
-INIT,MAP,LOCAL,pain{{@index}}cui,TO,get_order.ui.{{this}}.3
-{{/med_ois}}
-
+{{#repeat count=num_instances start=1}}
+{{#each ../med_ois}}
+INIT,MAP,LOCAL,pain{{@index}}ui_{{@../index}},TO,get_order.ui.{{this}}.{{@../index}}
+{{/each}}
+{{/repeat}}
 
 #
 ##GET the string of all orders
 #
-{{#med_ois}}
-INIT,MAP,LOCAL,pain{{@index}}astring,TO,get_order.display_string.{{this}}.1
-INIT,MAP,LOCAL,pain{{@index}}bstring,TO,get_order.display_string.{{this}}.2
-INIT,MAP,LOCAL,pain{{@index}}cstring,TO,get_order.display_string.{{this}}.3
-{{/med_ois}}
+{{#repeat count=num_instances start=1}}
+{{#each ../med_ois}}
+INIT,MAP,LOCAL,pain{{@index}}string_{{@../index}},TO,get_order.display_string.{{this}}.{{@../index}}
+{{/each}}
+{{/repeat}}
 #
 ##GET indication prompt for 3 instances of each med
 #
-{{#med_ois}}
-INIT,MAP,LOCAL,ind{{@index}}a,TO,get_order.1000508.{{this}}.1
-INIT,MAP,LOCAL,ind{{@index}}b,TO,get_order.1000508.{{this}}.2
-INIT,MAP,LOCAL,ind{{@index}}c,TO,get_order.1000508.{{this}}.3
-{{/med_ois}}
+{{#repeat count=num_instances start=1}}
+{{#each ../med_ois}}
+INIT,MAP,LOCAL,pain{{@index}}ind_{{@../index}},TO,get_order.1000508.{{this}}.{{@../index}}
+{{/each}}
+{{/repeat}}
 #
-INIT,SET,LOCAL,mildcount,TO,0
-INIT,SET,LOCAL,modcount,TO,0
-INIT,SET,LOCAL,sevcount,TO,0
+{{#severities}}
+INIT,SET,LOCAL,{{prefix}}count,TO,0
+INIT,SET,LOCAL,{{prefix}}text,TO,
+INIT,SET,LOCAL,{{prefix}}UI,TO,
 #
-INIT,SET,LOCAL,mildtest,TO,
-INIT,SET,LOCAL,modtext,TO,
-INIT,SET,LOCAL,sevtest,TO,
-#
-INIT,SET,LOCAL,mildUI,TO,
-INIT,SET,LOCAL,modUI,TO,
-INIT,SET,LOCAL,sevUI,TO,
-#
+{{/severities}}
+
 ##Increment a counter for each instance of a mild, mod, or sev 
 #
+## START TEST
+{{#repeat count=num_instances start=1}}
+{{/repeat}}
+## END TEST
+
 {{#med_ois}}
 #### {{this}} MILD ####
 INIT,IF,,ind{{@index}}a,CONTAINS,MILD,THEN,

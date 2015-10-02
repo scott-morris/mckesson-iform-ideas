@@ -1,6 +1,14 @@
 num_dc: 9
+num_instances: 3
 med_ois:
   - 14000240
   - 19999999
   - 18888888
   - 14444444
+severities:
+  - prefix: mild
+    search: "MILD"
+  - prefix: moderate
+    search: "MOD"
+  - prefix: severe
+    search: "SEV"
